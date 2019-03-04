@@ -53,6 +53,7 @@ git clone https://github.com/angular-schule/2019-03-angular-workshop-mannheim.gi
 cd 2019-03-angular-workshop-mannheim
 cd rxjs-playground-node
 npm install
+npm test
 ```
 
 In der zweiten Hälfte des Tages lernen wir, wie wir komplexe Zustände („States“) mit dem Framework NgRx effizient verwalten können.
