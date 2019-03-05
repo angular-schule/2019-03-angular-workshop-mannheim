@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { map, retry, catchError } from 'rxjs/operators';
 
 import { Book } from './book';
 
@@ -25,9 +25,11 @@ export class BookStoreService {
     return this.http.get<any[]>(`${this.api}/BOOKSINVALID`);
   }
 
-  getSingle(isbn: string): Observable<Book> {
+  getSingle(isbn: string) {
     return this.http.get<any>(`${this.api}/books/${isbn}`).pipe(
-      map(book => this.responseToBook(book))
+      map(book => this.responseToBook(book)),
+      retry(3),
+      // catchError((e: HttpErrorResponse) => of(e))
     );
   }
 

@@ -20,15 +20,16 @@ export class BookDetailsComponent implements OnInit {
   ngOnInit() {
     this.book$ = this.route.paramMap.pipe(
       map(params => params.get('isbn')),
-      switchMap(isbn => this.bs.getSingle(isbn)),
-      catchError((err: HttpErrorResponse) => of({
-        isbn: '000',
-        title: err.url,
-        description: 'Ein Fehler ist aufgetreten!',
-        rating: 1,
-        thumbnail: '',
-        authors: []
-      }))
+      switchMap(isbn => this.bs.getSingle(isbn)
+        .pipe(catchError((err: HttpErrorResponse) => of({
+          isbn: '000',
+          title: err.url,
+          description: 'Ein Fehler ist aufgetreten!',
+          rating: 1,
+          thumbnail: '',
+          authors: []
+        })))
+      )
     );
   }
 }
