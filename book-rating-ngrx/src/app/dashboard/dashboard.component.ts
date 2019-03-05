@@ -3,6 +3,9 @@ import { of } from 'rxjs';
 
 import { Book } from '../shared/book';
 import { BookStoreService } from '../shared/book-store.service';
+import { State } from '../reducers';
+import { Store } from '@ngrx/store';
+import { LoadBooks } from '../actions/book.actions';
 
 @Component({
   selector: 'br-dashboard',
@@ -13,9 +16,12 @@ export class DashboardComponent implements OnInit {
   loading$ = of(false); // TODO: Implement logic
   books$ = this.service.getAll();
 
-  constructor(private service: BookStoreService) { }
+  constructor(
+    private service: BookStoreService,
+    private store: Store<State>) { }
 
   ngOnInit() {
+    this.store.dispatch(new LoadBooks());
   }
 
   doRateUp(book: Book) {

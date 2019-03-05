@@ -1,10 +1,11 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 import { Book } from '../shared/book';
 
 @Component({
   selector: 'br-book',
-  templateUrl: './book.component.html'
+  templateUrl: './book.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BookComponent {
   private minRating = 1;
