@@ -1,11 +1,13 @@
 import { simpleTimer$ } from './data/simple-timer';
 
-const subscription = simpleTimer$.subscribe(
-  e => console.log(e),
-  e => console.error(e),
-  () => console.info('Complete')
-);
+const oberserver = {
+  next: e => console.log(e),
+  error: err =>  console.error(err),
+  complete: () => console.log('Complete!')
+}
 
-/******************************/
+const subscription = simpleTimer$.subscribe(oberserver);
 
-// TODO: Unsubscribe after timeout
+// Angular: ngOnDestory, takeUntil, takeWhile
+setTimeout(() => subscription.unsubscribe(), 3000);
+

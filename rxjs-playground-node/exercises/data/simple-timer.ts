@@ -8,4 +8,4 @@ export const simpleTimer$ = new Observable(observer => {
   return () => {
     clearInterval(interval);
   }
-}).pipe(take(10));
+}).pipe(take(4));
