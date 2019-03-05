@@ -1,4 +1,4 @@
-<div *ngIf="book$ | async as book" style="margin-top: 80px">
+<div *ngIf="book$ | async as book; else loading" style="margin-top: 80px">
 
   <h3>{{ book.title }}</h3>
 
@@ -20,6 +20,6 @@
 
 </div>
 
-
-
-
+<ng-template #loading>
+  <h2>Loading....</h2>
+</ng-template>

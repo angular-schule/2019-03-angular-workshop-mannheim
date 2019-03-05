@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, share } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
 import { Book } from '../shared/book';
@@ -19,7 +19,7 @@ export class BookDetailsComponent implements OnInit {
   ngOnInit() {
     this.book$ = this.route.paramMap.pipe(
       map(params => params.get('isbn')),
-      switchMap(isbn => this.bs.getSingle(isbn))
+      switchMap(isbn => this.bs.getSingle(isbn)),
     );
   }
 }
