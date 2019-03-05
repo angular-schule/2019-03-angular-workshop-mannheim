@@ -1,3 +1,7 @@
+<div *ngIf="loading$ | async">
+  Buch wird geladen...
+</div>
+
 <div *ngIf="book$ | async as book; else loading" style="margin-top: 80px">
 
   <h3>{{ book.title }}</h3>

@@ -6,6 +6,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Book } from '../shared/book';
 import { BookStoreService } from '../shared/book-store.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { LoadBook } from '../actions/book.actions';
+import { State } from '../reducers';
+import { Store, select } from '@ngrx/store';
+import { getBookByIsbn, getBooksLoading } from '../selectors/book.selectors';
 
 @Component({
   selector: 'br-book-details',
@@ -14,22 +18,26 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class BookDetailsComponent implements OnInit {
 
   book$: Observable<Book>;
+  loading$ = this.store$.pipe(select(getBooksLoading));
 
-  constructor(private route: ActivatedRoute, private bs: BookStoreService) { }
+  constructor(private route: ActivatedRoute, private store$: Store<State>) { }
 
   ngOnInit() {
-    this.book$ = this.route.paramMap.pipe(
-      map(params => params.get('isbn')),
-      switchMap(isbn => this.bs.getSingle(isbn)
-        .pipe(catchError((err: HttpErrorResponse) => of({
-          isbn: '000',
-          title: err.url,
-          description: 'Ein Fehler ist aufgetreten!',
-          rating: 1,
-          thumbnail: '',
-          authors: []
-        })))
-      )
+
+    const getIsbn$ = this.route.paramMap.pipe(
+      map(params => params.get('isbn'))
     );
+
+    // TODO: in einen @Effect!
+    getIsbn$.pipe(
+      map(isbn => new LoadBook({ isbn }))
+    ).subscribe(this.store$);
+
+    this.book$ = getIsbn$.pipe(
+      switchMap(isbn => this.store$.pipe(
+        select(getBookByIsbn, { isbn })
+      ))
+    );
+
   }
 }

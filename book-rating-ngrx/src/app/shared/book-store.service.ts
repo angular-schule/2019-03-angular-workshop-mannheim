@@ -26,7 +26,7 @@ export class BookStoreService {
   }
 
   getSingle(isbn: string) {
-    return this.http.get<any>(`${this.api}/books/${isbn}`).pipe(
+    return this.http.get<any>(`${this.api}/books/${isbn}/slow`).pipe(
       map(book => this.responseToBook(book)),
       retry(3),
       // catchError((e: HttpErrorResponse) => of(e))
